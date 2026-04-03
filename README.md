@@ -234,7 +234,77 @@ Response:
   "recentTransactions": [...]
 }
 
+## How to Test (Step-by-Step)
+
+### 1. Register Users
+
+Create users with different roles:
+
+- Admin
+- Viewer
+- Analyst
+
 ---
+
+### 2. Login
+
+Login each user and copy their JWT token.
+
+---
+
+### 3. Set Authorization
+
+In Postman:
+Authorization → Bearer Token → Paste token
+
+---
+
+### 4. Test Role-Based Access
+
+#### Admin:
+- Can create, update, delete records
+- Can assign records to other users
+
+#### Viewer:
+- Can only view records and dashboard
+- Cannot create/update/delete
+
+#### Analyst:
+- Can view records and dashboard
+- Cannot modify data
+
+---
+
+### 5. Assign Records (Admin)
+
+Admin can assign records to other users using:
+
+POST /api/records
+
+Body:
+{
+  "amount": 1500,
+  "type": "income",
+  "category": "salary",
+  "createdBy": "USER_ID"
+}
+
+---
+
+### 6. Verify Data Isolation
+
+Login as Viewer/Analyst:
+GET /api/records
+
+Each user will see only their own data.
+
+---
+
+## Testing Notes
+
+- Viewer and Analyst cannot create records
+- Admin can assign records to other users
+- Each user only sees their own records (data isolation)
 
 ## Access Control Logic
 
@@ -259,6 +329,8 @@ Implemented using JWT Authentication and role-based middleware.
 ## Postman Collection
 
 A Postman collection is included in the repository for easy API testing.
+
+https://www.postman.com/yash-4186739/workspace/finance-dashboard-api-testing/collection/44385396-8bf777ab-3854-4c41-ba6f-1457cfbeff52?action=share&creator=44385396
 
 ---
 
