@@ -100,7 +100,7 @@ finance-dashboard/
 
 ### 1️. Clone Repository
 ```bash
-git clone <your-repo-link>
+git clone https://github.com/yashch3101/finance-dashboard-backend
 cd finance-dashboard
 ```
 
