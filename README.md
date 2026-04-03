@@ -266,7 +266,7 @@ A Postman collection is included in the repository for easy API testing.
 
 The backend is deployed on Render and can be accessed via:
 
-https://your-api.onrender.com
+https://finance-dashboard-backend-snq9.onrender.com
 
 ---
 

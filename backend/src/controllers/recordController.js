@@ -3,7 +3,7 @@ const Record = require("../models/Record");
 // Create a record (Admin only)
 exports.createRecord = async (req, res) => {
     try {
-        const { amount, type, category, date, notes } = req.body;
+        const { amount, type, category, date, notes, createdBy } = req.body;
 
         if (!amount || amount <= 0) {
             return res.status(400).json({ message: "Invalid amount" });
@@ -15,7 +15,7 @@ exports.createRecord = async (req, res) => {
             category,
             date,
             notes,
-            createdBy: req.user._id,
+            createdBy: createdBy || req.user._id,
         });
 
         res.status(201).json(record);
@@ -62,6 +62,10 @@ exports.getRecordById = async (req, res) => {
             return res.status(404).json({ message: "Record not found" });
         }
 
+        if (record.createdBy.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: "Not authorized" });
+        }
+
         res.json(record);
 
     } catch (error) {
@@ -76,6 +80,10 @@ exports.updateRecord = async (req, res) => {
 
         if (!record) {
             return res.status(404).json({ message: "Record not found" });
+        }
+
+        if (record.createdBy.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: "Not authorized" });
         }
 
         Object.assign(record, req.body);
@@ -95,6 +103,10 @@ exports.deleteRecord = async (req, res) => {
 
         if (!record) {
             return res.status(404).json({ message: "Record not found" });
+        }
+
+        if (record.createdBy.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: "Not authorized" });
         }
 
         await record.deleteOne();
